@@ -1,0 +1,126 @@
+{
+  "schema": "DEMO_CALL/v2",
+  "event_id": "btc-demo-20261030-01",
+  "mode": "demo_signal",
+  "paper_only": true,
+  "live_money": false,
+  "api_demo_orders": false,
+  "asset": "BTC",
+  "as_of_rome": "2026-10-30 15:07 Europe/Rome",
+  "expire_at_rome": "2026-10-31 15:07 Europe/Rome",
+  "question": "Dopo l'incidente di sicurezza Binance (~$6.3B) e il calo sotto ~$80k, c'è un edge demo actionable long/short su BTC nelle prossime 24h?",
+  "loop_count": 0,
+  "abstain": true,
+  "thesis": "Evento primario confermato (hack Binance + pledge di copertura). Direzione 24h non supportata da edge chiaro: bounce da cover vs continuazione risk-off entrambi plausibili. Abstain sui livelli.",
+  "sentiment": {
+    "score": -1,
+    "confidence": "medium",
+    "notes": "Narrativa X/news negativa su hack + liquidazioni; controcanto su cover SAFU e 'resilienza' prezzo. Volume sociale ≠ segnale."
+  },
+  "evidence": [
+    {
+      "claim": "Binance conferma incidente di sicurezza; stima impatto ~$6.3B; DevOps laptop compromesso; nessun leak di private key trovato; cover perdite via SAFU + fondi societari; freeze on-chain ~$3B; withdrawal sospesi in precauzione; depositi non affetti (update).",
+      "source": "https://www.binance.com/en/support/announcement/detail/c5a8729a97ac486d963784d96c5642d7",
+      "tier": "primary_official",
+      "timestamp_utc": "2026-10-30T04:36:00Z",
+      "status": "FACT"
+    },
+    {
+      "claim": "AP: Binance segnala incidente con impatto stimato oltre $6B; fondatore indica che sembra un hack.",
+      "source": "https://apnews.com/article/binance-cryptocurrency-security-39cda8ceb8095e036334a18549d3d20d",
+      "tier": "wire",
+      "timestamp_utc": "2026-10-30T03:32:00Z",
+      "status": "FACT"
+    },
+    {
+      "claim": "BBC: conferma hack su Binance.com; Binance.us non affetto; cover perdite; attribuzione NK non confermata da Binance.",
+      "source": "https://www.bbc.com/news/articles/cm5yn8eqg3npo",
+      "tier": "wire",
+      "timestamp_utc": "2026-10-30T12:00:00Z",
+      "status": "FACT"
+    },
+    {
+      "claim": "CNBC: ~$3B asset frozen; TRM/Chainalysis link a TraderTraitor/NK (non conferma ufficiale Binance).",
+      "source": "https://www.cnbc.com/2026/10/30/billions-in-crypto-frozen-in-binance-hack-heres-what-happens-next-.html",
+      "tier": "named_journalist",
+      "timestamp_utc": "2026-10-30T01:54:00Z",
+      "status": "FACT"
+    },
+    {
+      "claim": "BTC spot USD mid ~76804 (CoinGecko simple/price).",
+      "source": "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_last_updated_at=true",
+      "tier": "wire",
+      "timestamp_utc": "2026-10-30T14:06:05Z",
+      "status": "FACT"
+    },
+    {
+      "claim": "X trending: liquidazioni >$1.1B e break sotto $78k (sintesi Grok/X — verificare; non primary).",
+      "source": "https://x.com/i/trending/2116009271863521385",
+      "tier": "anonymous",
+      "timestamp_utc": "2026-10-30T03:33:15Z",
+      "status": "UNCONFIRMED"
+    },
+    {
+      "claim": "Whale buy $202M / accumulo dip (sintesi X) — non primary on-chain verificata qui.",
+      "source": "https://x.com/i/trending/2116136417826951657",
+      "tier": "anonymous",
+      "timestamp_utc": "2026-10-30T11:58:34Z",
+      "status": "UNCONFIRMED"
+    },
+    {
+      "claim": "Inflow ETF spot US ~$286M su 26–27 ott (sintesi X) — fuori finestra 72h senza riconferma fresca → non usare come driver 24h.",
+      "source": "https://x.com/i/trending/2114954704258314514",
+      "tier": "anonymous",
+      "timestamp_utc": "2026-10-28T21:34:33Z",
+      "status": "STALE"
+    }
+  ],
+  "views": {
+    "bull": {
+      "summary": "Cover ufficiale + freeze parziale riduce rischio solvibilità percepito; possibile mean-reversion dopo shock se withdrawal tornano online senza nuovo spillover.",
+      "supports": ["Binance announcement cover", "CNBC Fundstrat solvency note (via CNBC)"]
+    },
+    "bear": {
+      "summary": "Hack record + withdrawal freeze + risk-off macro recente; liquidazioni e break di supporti narrativi; attribuzione threat actor aumenta coda di rischio contagio.",
+      "supports": ["Binance primary", "AP/BBC/CNBC", "X liquidation narrative UNCONFIRMED"]
+    },
+    "base": {
+      "summary": "Range volatile 24h con edge direzionale debole: fatti forti sull'evento, falsificatori su timing recovery vs second leg down entrambi aperti.",
+      "supports": ["price_ref CoinGecko", "ongoing investigation"]
+    }
+  },
+  "probability": {
+    "event": "Probabilità che un livello demo long O short abbia edge positivo vs random nelle prossime 24h",
+    "range_low": null,
+    "range_high": null,
+    "drivers": ["hack confermato", "cover pledge", "operational freeze", "direzione 24h ambigua"],
+    "base_rate_note": "Post-exchange-hack 24h returns historically high variance; no in-session backtest run.",
+    "p_error": null
+  },
+  "price_ref": {
+    "venue": "CoinGecko aggregate",
+    "mid": 76804,
+    "source": "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd&include_last_updated_at=true",
+    "timestamp_utc": "2026-10-30T14:06:05Z"
+  },
+  "call": null,
+  "human_checklist": [
+    "Nessuna esecuzione: abstain",
+    "Se vuoi tradare comunque su demo, non è questa call — attendi prossimo event_id con livelli PASS",
+    "Monitor solo: announcement Binance + ripresa withdrawal + mid CoinGecko/Bybit Demo",
+    "Log: BE / SKIPPED per event_id btc-demo-20261030-01"
+  ],
+  "platform_hint_phase1": "TradingView Paper | MT5 demo | Bybit Demo app (human click) — non usare oggi",
+  "platform_hint_phase2": "Bybit Demo API disabled",
+  "gate": {
+    "status": "PASS",
+    "reasons": ["abstain onesto: fatti evento sufficienti, edge direzionale insufficiente per entry/SL/TP"]
+  },
+  "gaps": [
+    "Abstain: mancano livelli perché direzione 24h non calibrabile senza forzatura",
+    "Liquidazioni/$1.1B e whale $202M non verificate on-chain in questa sessione",
+    "Fed hold / ETF inflow stale o secondari per il setup 24h",
+    "WebFetch diretto announcement Binance timeout; contenuto da search snippet + wires indipendenti"
+  ],
+  "hard_stop": "Demo signal only. Not investment advice. Human demo execution. No live money. No zero-error promise."
+}

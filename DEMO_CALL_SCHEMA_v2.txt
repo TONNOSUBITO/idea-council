@@ -1,0 +1,1 @@
+See PROMPT_MASTER_v2.md section OUTPUT B for DEMO_CALL/v2 schema. Template: DEMO_CALL_TEMPLATE_first.md
