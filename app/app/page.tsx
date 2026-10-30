@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { listCalls } from "@/lib/store";
-import { stats } from "@/lib/stats";
+import { stats, series, isOpen } from "@/lib/stats";
+import { Line, Bars } from "@/components/Charts";
+import TradeCard from "@/components/TradeCard";
 import { StatusBadge } from "@/components/Badges";
 export const dynamic = "force-dynamic";
 const pct = (x: number) => `${(x * 100).toFixed(0)}%`;
 export default function Home() {
-  const calls = listCalls(); const s = stats(calls);
+  const calls = listCalls(); const s = stats(calls); const z = series(calls); const open = calls.filter(isOpen);
   return (<div className="space-y-6">
     <section className="grid grid-cols-2 gap-3 md:grid-cols-4">
       <div className="card"><div className="text-xs text-zinc-400">Call (n)</div><div className="text-2xl">{s.n}</div></div>
@@ -18,6 +20,19 @@ export default function Home() {
     ) : (
       <section className="card text-xs text-zinc-400">Campione troppo piccolo (&lt;20 call segnate): win-rate {s.winRate === null ? "–" : pct(s.winRate)} non significativo. Brier mostrato da n≥20.</section>
     )}
+    <section className="grid grid-cols-2 gap-3 md:grid-cols-3">
+      <div className={`card ${s.mature ? "" : "opacity-50"}`}><div className="text-xs text-zinc-400">Win-rate {s.mature ? "" : "(n<20)"}</div><div className="text-2xl">{s.winRate === null ? "–" : pct(s.winRate)}</div></div>
+      <div className="card"><div className="text-xs text-zinc-400">Expectancy</div><div className="text-2xl">{s.expectancyR?.toFixed(2) ?? "–"}R</div></div>
+      <div className="card flex items-center justify-center"><Link className="btn" href="/scout">Apri Scout → trade possibili</Link></div>
+    </section>
+    {!s.mature && <p className="text-xs text-zinc-500">Grafici su campione piccolo ({s.scored} segnate): solo indicativi.</p>}
+    <section className="grid gap-3 md:grid-cols-3">
+      <div className="card"><div className="mb-1 text-xs text-zinc-400">Equity (R cumulativo)</div><Line zero series={[{ vals: z.equity.map((e) => e.cum), color: "#34d399" }]} /></div>
+      <div className="card"><div className="mb-1 text-xs text-zinc-400">Esiti</div><Bars data={[{ label: "WIN", value: z.counts.WIN, color: "#34d399" }, { label: "LOSS", value: z.counts.LOSS, color: "#f87171" }, { label: "BE", value: z.counts.BE, color: "#a1a1aa" }, { label: "SKIPPED", value: z.counts.SKIPPED, color: "#52525b" }]} /></div>
+      <div className="card"><div className="mb-1 text-xs text-zinc-400"><span className="text-amber-400">Abstain %</span> · <span className="text-red-400">FAIL %</span> nel tempo</div><Line min={0} max={1} series={[{ vals: z.rates.map((r) => r.abstain), color: "#fbbf24" }, { vals: z.rates.map((r) => r.fail), color: "#f87171" }]} /></div>
+    </section>
+    <section><h2 className="mb-2 font-semibold">Paper trade aperti ({open.length})</h2>
+      <div className="space-y-2">{open.map((c) => <TradeCard key={c.event_id} c={c} />)}{!open.length && <div className="card text-sm text-zinc-500">Nessun trade aperto.</div>}</div></section>
     <section className="card">
       <div className="mb-2 flex justify-between"><h2 className="font-semibold">Call</h2><Link className="btn" href="/call/new">Genera call di oggi</Link></div>
       <table className="w-full"><thead><tr><th>event_id</th><th>Stato</th><th>Asset</th><th>Creata (Roma)</th><th>Esito</th></tr></thead><tbody>

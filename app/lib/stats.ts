@@ -19,3 +19,25 @@ export function stats(calls: CallRecord[]) {
     mature: scored.length >= 20,
   };
 }
+
+const SCORED = ["WIN", "LOSS", "BE"];
+/** Chart series derived from call history (oldest → newest). */
+export function series(calls: CallRecord[]) {
+  const real = calls.filter((c) => c.status === "ready").slice().sort((a, b) => a.created_at_utc.localeCompare(b.created_at_utc));
+  let cum = 0;
+  const equity = real.filter((c) => c.log && SCORED.includes(c.log.result)).map((c) => {
+    const r = typeof c.log!.R_multiple === "number" ? c.log!.R_multiple! : c.log!.result === "WIN" ? 1 : c.log!.result === "LOSS" ? -1 : 0;
+    cum += r; return { id: c.event_id, r, cum };
+  });
+  const counts = { WIN: 0, LOSS: 0, BE: 0, SKIPPED: 0 } as Record<string, number>;
+  real.forEach((c) => { if (c.log) counts[c.log.result] = (counts[c.log.result] ?? 0) + 1; });
+  let a = 0, f = 0;
+  const rates = real.map((c, i) => {
+    if (c.gate.status === "PASS" && c.call?.abstain) a++; if (c.gate.status === "FAIL") f++;
+    return { id: c.event_id, abstain: a / (i + 1), fail: f / (i + 1) };
+  });
+  return { equity, counts, rates };
+}
+export const isPossibleTrade = (c: CallRecord) =>
+  c.status === "ready" && c.gate.status === "PASS" && !!c.call && !c.call.abstain && c.call.mode === "demo_signal" && !!c.call.call;
+export const isOpen = (c: CallRecord) => isPossibleTrade(c) && !c.log;
