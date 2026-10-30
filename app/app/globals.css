@@ -1,0 +1,6 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+body { @apply bg-zinc-950 text-zinc-100; }
+.card { @apply rounded-lg border border-zinc-800 bg-zinc-900 p-4; }
+.btn { @apply rounded bg-zinc-100 px-3 py-1.5 text-sm font-medium text-zinc-900 hover:bg-white disabled:opacity-50; }
+.btn2 { @apply rounded border border-zinc-600 px-3 py-1.5 text-sm hover:bg-zinc-800; }
+th, td { @apply border-b border-zinc-800 px-2 py-1 text-left text-sm; }

@@ -275,3 +275,7 @@ No live promotion from this prompt. Sir must explicitly approve any live step af
 ## STYLE
 
 Direct, no hype. Separate FACT / UNCONFIRMED / STALE / estimate. Cite sources. JSON keys English. Human brief IT or EN on request.
+
+---
+## v2.1 NOTES (2026-10-30, Grok.com critique)
+Superseded operationally by GROK_COMPLETE_PROMPT.md v2.1: inline risk gate (self-contained); go-live never automatic, only explicit written operator approval; JSON field types documented; probability width = range_high − range_low ≥ 0.20; R:R<1 → FAIL unless low_rr_ack===true; persistence = Idea Council app log (not chat memory), logger = operator via app; price_ref default CoinGecko/Bybit public spot, never testnet; ISO-8601 timestamps with offset.
